@@ -8,6 +8,9 @@ Pengen mentahan nya ?
 Nih ada santai bro....
 https://github.com/ImYanXiao/Elaina-MultiDevice
 
+Mau Yang No Error Script Bot nya, Gas Cek Video YT :
+
+
 Pengen yang udah di recode oleh owner?
 Script bot ini dijual bila kalian mau bisa chat owner
 
