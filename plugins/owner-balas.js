@@ -65,6 +65,7 @@ let td = 'application/vnd.openxmlformats-officedocument.wordprocessingml.documen
 }}
 handler.help = ['balas'].map(v => v + ' [nomor] | [teks]')
 handler.tags = ['owner']
+handler.owner = true
 handler.command = /^(pesan|balas|reply)$/i
 
 export default handler
