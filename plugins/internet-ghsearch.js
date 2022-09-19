@@ -8,6 +8,7 @@ let handler = async (m, { text, command, usedPrefix }) => {
     let json = await res.json()
     let str = json.items.map((repo, index) => {
         return `>      「 ${ 1 + index } 」       <
+*${htki} ɢɪᴛʜᴜʙ sᴇᴀʀᴄʜ ${htka}*
 ɴᴀᴍᴇ ʀᴇᴘᴏ : ${repo.name}
 ʙʏ : ${repo.owner.login}
 ғᴏʀᴋᴇᴅ : ${repo.fork ? 'True' : 'False'}
@@ -24,8 +25,10 @@ ${repo.description}` : ''}
 $ git clone ${repo.clone_url}
 `.trim()
     }).join('\n— — — — — — — — — — — — — —\n')
-    conn.sendHydrated(m.chat, `*${htki} ɢɪᴛʜᴜʙ sᴇᴀʀᴄʜ ${htka}*\n` + str, botdate, null, json.items.map((repo, index) => { return `${repo.html_url}` }), ['[ 1 ] ʟ ɪ ɴ ᴋ', '[ 2 ] ʟ ɪ ɴ ᴋ', '[ 3 ] ʟ ɪ ɴ ᴋ'], null,null, [[null,null],[null,null],[null,null]],m)
-}
+  //  conn.sendHydrated(m.chat, `*${htki} ɢɪᴛʜᴜʙ sᴇᴀʀᴄʜ ${htka}*\n` + str, botdate, null, json.items.map((repo, index) => { return `${repo.html_url}` }), ['[ 1 ] ʟ ɪ ɴ ᴋ', '[ 2 ] ʟ ɪ ɴ ᴋ', '[ 3 ] ʟ ɪ ɴ ᴋ'], null,null, [[null,null],[null,null],[null,null]],m)
+ // conn.sendMessage(m.chat, str, botdate, null, json.items.map((repo, index) => { return `${repo.html_url}` }), ['[ 1 ] ʟ ɪ ɴ ᴋ', '[ 2 ] ʟ ɪ ɴ ᴋ', '[ 3 ] ʟ ɪ ɴ ᴋ'], null,null, [[null,null],[null,null],[null,null]],m)
+m.reply(str)
+    }
 handler.help = ['githubsearch'].map(v => v + ' <pencarian>')
 handler.tags = ['internet','downloader']
 
