@@ -7,7 +7,8 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     let whmods = `*${htki} GOOGLE IMAGE ${htka}*
     🔎 *Result:* ${text}
     🌎 *Source:* Google`
-    conn.sendFile(m.chat, link, '', whmods, m)
+    //conn.sendFile(m.chat, link, '', whmods, m)
+    conn.sendButton(m.chat, whmods, botdate, link, [['Next', `.image ${text}`]], m)
     /* conn.sendHydrated (m.chat,`
 *${htki} GOOGLE IMAGE ${htka}*
 🔎 *Result:* ${text}
