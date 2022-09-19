@@ -20,3 +20,4 @@ handler.tags = ['internet', 'tools']
 handler.command = /^(gimage|image)$/i
 
 export default handler
+
