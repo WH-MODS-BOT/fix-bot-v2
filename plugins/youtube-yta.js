@@ -1,103 +1,57 @@
-// ---------------------------old------------------------------------------------
-
-/*import { youtubeSearch } from '@bochilteam/scraper'
-let handler = async (m, { conn, command, text, usedPrefix }) => {
-  if (!text) throw `Use example ${usedPrefix}${command} Minecraft`
-  let vid = (await youtubeSearch(text)).video[0]
-  if (!vid) throw 'Video/Audio Tidak ditemukan'
-  let { title, description, thumbnail, videoId, durationH, viewH, publishedTime } = vid
-  const url = 'https://www.youtube.com/watch?v=' + videoId
-  await conn.sendHydrated(m.chat, `
-*${htki} PLAY ${htka}*
-
-${htjava} *Title:* ${title}
-📤 *Published:* ${publishedTime}
-⏰ *Duration:* ${durationH}
-👁️ *Views:* ${viewH}
-
-🔗 *Url:* ${url}
-📔 *Description:* ${description}
-  `.trim(), wm, thumbnail, url, '📣 GO TO YOUTUBE', null, null, [
-    ['🎶 Audio', `${usedPrefix}yta ${url} yes`],
-    ['🎥 Video', `${usedPrefix}ytv ${url} yes`],
-    ['🔎 Youtube Search', `${usedPrefix}yts ${url}`]
-  ], m)
-}
-handler.help = ['play', 'play2'].map(v => v + ' <pencarian>')
-handler.tags = ['downloader', 'limitmenu']
-handler.command = /^play2?$/i
-
-handler.exp = 0
-handler.limit = true
-handler.register = true
-
-export default handler */
-// ---------------------------new------------------------------------------------
-
+let limit = 80
 import fetch from 'node-fetch'
-import { youtubeSearch } from '@bochilteam/scraper'
-let handler = async (m, { conn, groupMetadata, usedPrefix, text, args, command }) => {
-let fdoc = {quoted:{key : {participant : '0@s.whatsapp.net'},message: {documentMessage: {title: `${command}`}}}}
-//try {
-  if (!text) throw `Use example ${usedPrefix}${command} gustixa`
-  let vid = (await youtubeSearch(text)).video[0]
-  if (!vid) throw 'Video/Audio Tidak ditemukan'
-  let { title, description, thumbnail, videoId, durationH, viewH, publishedTime } = vid
-  const url = 'https://www.youtube.com/watch?v=' + videoId
-  let whmodsdev = `*${htki} PLAY ${htka}*
+import { youtubedl, youtubedlv2, youtubedlv3 } from '@bochilteam/scraper';
+let handler = async (m, { conn, args, isPrems, isOwner }) => {
+  if (!args || !args[0]) throw 'Uhm... urlnya mana?'
+  let chat = global.db.data.chats[m.chat]
+  const isY = /y(es)/gi.test(args[1])
+  const { thumbnail, audio: _audio, title } = await youtubedlv2(args[0]).catch(async _ => await youtubedl(args[0])).catch(async _ => await youtubedlv3(args[0]))
+  const limitedSize = (isPrems || isOwner ? 99 : limit) * 1024
+  let audio, source, res, link, lastError, isLimit
+  for (let i in _audio) {
+    try {
+      audio = _audio[i]
+      isLimit = limitedSize < audio.fileSize
+      if (isLimit) continue
+      link = await audio.download()
+      if (link) res = await fetch(link)
+      isLimit = res?.headers.get('content-length') && parseInt(res.headers.get('content-length')) < limitedSize
+      if (isLimit) continue
+      if (res) source = await res.arrayBuffer()
+      if (source instanceof ArrayBuffer) break
+    } catch (e) {
+      audio = link = source = null
+      lastError = e
+    }
+  }
+  if ((!(source instanceof ArrayBuffer) || !link || !res.ok) && !isLimit) throw 'Error: ' + (lastError || 'Can\'t download audio')
+  if (!isY && !isLimit) await conn.sendFile(m.chat, thumbnail, 'thumbnail.jpg', `
+*${htki} YOUTUBE ${htka}*
 
-  📌 *Title:* ${title}
-🔗 *Url:* ${url}
-📔 *Description:* ${description}
+*${htjava} Title:* ${title}
+*${htjava} Type:* mp3
+*${htjava} Filesize:* ${audio.fileSizeH}
 
-⏲️ *Published:* ${publishedTime}
-⌚ *Duration:* ${durationH}
-👁️ *Views:* ${viewH}
-  `
-  await conn.sendButton(m.chat, whmodsdev, wm, thumbnail, [
-    ['🎶 Audio', `${usedPrefix}yta ${url} yes`],
-    ['🎥 Video', `${usedPrefix}ytv ${url} yes`],
-    ['🔎 Youtube Search', `${usedPrefix}yts ${text}`]
-], m, fdoc)
-//} 
-/* catch {
-if (!text) throw 'Input Query'
-  let vid = (await youtubeSearch(text)).video[0]
-  if (!vid) throw 'Video/Audio Tidak Ditemukan'
-  let { title, description, thumbnail, videoId, durationH, durationS, viewH, publishedTime } = vid
-  let url = 'https://www.youtube.com/watch?v=' + videoId
-  let ytLink = `https://yt-downloader.akkun3704.repl.co/?url=${url}&filter=audioonly&quality=highestaudio&contenttype=audio/mpeg`
-  let capt = `*${htki} PLAY ${htka}*
+*L O A D I N G. . .*
+`.trim(), m) // title + '.mp3',
+  if (!isLimit) await conn.sendFile(m.chat, source, title + 'audio/mpeg', `
+*${htki} YOUTUBE ${htka}*
 
-  📌 *Title:* ${title}
-🔗 *Url:* ${url}
-📔 *Description:* ${description}
+*${htjava} Title:* ${title}
+*${htjava} Type:* mp3
+*${htjava} Filesize:* ${audio.fileSizeH}
 
-⏲️ *Published:* ${publishedTime}
-⌚ *Duration:* ${durationH}
-👁️ *Views:* ${viewH}
-  `
-  let buttons = [{ buttonText: { displayText: '🎶 Audio/Vn' }, buttonId: `${usedPrefix}yta ${url}` }, { buttonText: { displayText: '🎥 Video' }, buttonId: `${usedPrefix}ytv ${url}` }, { buttonText: { displayText: '🔎 Youtube Search' }, buttonId: `${usedPrefix}yts ${text}` }]
-  let msg = await conn.sendMessage(m.chat, { image: { url: thumbnail }, caption: capt, footer: '_Audio on progress..._', buttons }, { quoted: m })
-  // if (durationS > 4000) return conn.sendMessage(m.chat, { text: `*Download:* ${await shortUrl(ytLink)}\n\n_Duration too long..._` }, { quoted: msg })
-  conn.sendMessage(m.chat, { audio: { url: ytLink }, mimetype: 'audio/mpeg' }, { quoted: msg })
-} */
-
+*L O A D I N G. . .*
+`.trim(), m, null, {
+    asDocument: chat.useDocument
+  })
 }
-handler.help = ['play', 'play2'].map(v => v + ' <pencarian>')
+handler.help = ['mp3', 'a'].map(v => 'yt' + v + ` <url> <without message>`)
 handler.tags = ['downloader', 'limitmenu']
-handler.command = /^play2?$/i
+handler.command = /^yt(a|mp3)$/i
 
 handler.exp = 0
-handler.limit = true
 handler.register = true
+handler.limit = true
 
 export default handler
-
-async function shortUrl(url) {
-  url = encodeURIComponent(url)
-  let res = await fetch(`https://is.gd/create.php?format=simple&url=${url}`)
-  if (!res.ok) throw false
-  return await res.text()
-}
-
