@@ -100,4 +100,3 @@ async function shortUrl(url) {
   if (!res.ok) throw false
   return await res.text()
 }
-
