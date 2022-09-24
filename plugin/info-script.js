@@ -8,8 +8,8 @@ Pengen mentahan nya ?
 Nih ada santai bro....
 https://github.com/ImYanXiao/Elaina-MultiDevice
 
-Mau Yang No Error Script Bot nya, Gas Cek Video YT :
-https://youtu.be/Pgv_GuQTPyo
+Mau Yang No Error Script Bot nya, Beli di owner
+https://wa.me/6288223674569
 
 Pengen yang udah di recode oleh owner?
 Script bot ini dijual bila kalian mau bisa chat owner
@@ -21,7 +21,7 @@ conn.sendButtonDoc(m.chat, str, wm,'Thankyou','Bilek', m, { contextInfo: { exter
     mediaUrl: "https://Instagram.com/_ctzhid",
     mediaType: "VIDEO",
     description: "https://www.instagram.com/p/CevoCg5hG-p/?utm_source=ig_web_copy_link", 
-    title: 'WH-MODS-DEV-V1 MultiDevice',
+    title: 'Chenn-MD-BOT-V2 MultiDevice',
     body: wm,
     thumbnail: thumb,
     sourceUrl: sgc
