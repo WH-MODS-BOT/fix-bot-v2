@@ -172,7 +172,7 @@ global.dmenub = '┊↬' //body
 global.dmenub2 = '┊' //body for info cmd on Default menu
 global.dmenuf = '┗––––––––––✦' //footer
 
-// COMMAND MENU
+.// COMMAND MENU
 global.dashmenu = '┅═┅═❏ *DASHBOARD* ❏═┅═┅'
 global.cmenut = '❏––––––『' //top
 global.cmenuh = '』––––––' //header
